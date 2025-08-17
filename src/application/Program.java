@@ -18,32 +18,35 @@ public class Program {
         List<ChessPiece> captured = new ArrayList<>();
         
         
-        while (true) {
+        while (!chessMatch.getCheckMate()) {
             try {
-	        	UI.clearScreen(); 
-	        	UI.printMath(chessMatch,captured);
-	            System.out.println();
-	            System.out.print("Source: ");
-	            ChessPosition source = UI.readChessPosition(sc);
-	            
-	            boolean[][] possibleMoves = chessMatch.possibleMoves(source);
-	            UI.clearScreen();
-	            System.out.println();
-	            System.out.print("Target: ");
-	            ChessPosition target = UI.readChessPosition(sc);
-	            
-	            ChessPiece capturedPiece = chessMatch.performChessMove(source, target);
-	            
-	            if(capturedPiece != null) {
-	            	captured.add(capturedPiece);
-	            }
-            }catch(ChessExeption e) {
-            	System.out.println(e.getMessage());
-            	sc.nextLine();
-            }catch(InputMismatchException e) {
-            	System.out.println(e.getMessage());
-            	sc.nextLine();
+                UI.clearScreen();
+                UI.printMath(chessMatch, captured);
+
+                System.out.println();
+                System.out.print("Source: ");
+                ChessPosition source = UI.readChessPosition(sc);
+
+                boolean[][] possibleMoves = chessMatch.possibleMoves(source);
+                UI.clearScreen();
+                UI.printBoard(chessMatch.getPieces(), possibleMoves);
+                UI.printMath(chessMatch, captured); // Otimizado para imprimir o tabuleiro com os movimentos possíveis.
+
+                System.out.println();
+                System.out.print("Target: ");
+                ChessPosition target = UI.readChessPosition(sc);
+
+                ChessPiece capturedPiece = chessMatch.performChessMove(source, target);
+
+                if (capturedPiece != null) {
+                    captured.add(capturedPiece);
+                }
+            } catch (ChessExeption | InputMismatchException e) {
+                System.out.println(e.getMessage());
+                sc.nextLine();
             }
         }
+        UI.clearScreen();
+        UI.printMath(chessMatch, captured);
     }
 }
